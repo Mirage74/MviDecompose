@@ -56,8 +56,8 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class Screen {
-    object ContactList : Screen()
-    object AddContact : Screen()
+    data object ContactList : Screen()
+    data object AddContact : Screen()
 
     data class EditContact(val contact: Contact) : Screen()
 }
