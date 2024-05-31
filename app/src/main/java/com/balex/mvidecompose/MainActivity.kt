@@ -13,7 +13,7 @@ import com.balex.mvidecompose.ui.content.Contacts
 import com.balex.mvidecompose.ui.content.EditContact
 import com.balex.mvidecompose.ui.theme.MviDecomposeTestTheme
 
-class MainActy : ComponentActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
