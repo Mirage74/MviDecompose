@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class DefaultEditContactComponent(
     componentContext: ComponentContext,
-    private val contact: Contact
-): EditContactComponent, ComponentContext by componentContext{
+    private val contact: Contact,
+    private val onContactSaved: () -> Unit,
+) : EditContactComponent, ComponentContext by componentContext {
+
     private val repository = RepositoryImpl
     private val editContactUseCase = EditContactUseCase(repository)
 
@@ -23,7 +25,10 @@ class DefaultEditContactComponent(
     }
 
     private val _model = MutableStateFlow(
-        stateKeeper.consume(KEY) ?: EditContactComponent.Model(username = contact.username, phone = contact.phone)
+        stateKeeper.consume(KEY) ?: EditContactComponent.Model(
+            username = contact.username,
+            phone = contact.phone
+        )
     )
     override val model: StateFlow<EditContactComponent.Model>
         get() = _model.asStateFlow()
@@ -44,9 +49,11 @@ class DefaultEditContactComponent(
                 phone = phone
             )
         )
+        onContactSaved()
     }
 
     companion object {
+
         private const val KEY = "DefaultEditContactComponent"
     }
 }
