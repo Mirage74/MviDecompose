@@ -64,6 +64,7 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.decompose)
+    implementation("com.arkivanov.decompose:extensions-compose-jetpack:2.1.2")
 
 
     testImplementation(libs.junit)

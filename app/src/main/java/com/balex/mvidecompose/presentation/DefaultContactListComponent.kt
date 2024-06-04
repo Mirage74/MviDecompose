@@ -16,7 +16,6 @@ class DefaultContactListComponent(
     val onAddContactRequested: () -> Unit
 ) : ContactListComponent, ComponentContext by componentContext {
 
-    //private val viewModel = instanceKeeper.getOrCreate { FakeViewModel() }
 
     private val repository = RepositoryImpl
     private val getContactsUseCase = GetContactsUseCase(repository)
@@ -42,8 +41,3 @@ class DefaultContactListComponent(
     }
 }
 
-//private class FakeViewModel(): InstanceKeeper.Instance {
-//    override fun onDestroy() {
-//        super.onDestroy()
-//    }
-//}
