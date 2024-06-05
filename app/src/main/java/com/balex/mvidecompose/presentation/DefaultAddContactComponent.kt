@@ -1,6 +1,7 @@
 package com.balex.mvidecompose.presentation
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.balex.mvidecompose.core.componentScope
@@ -8,38 +9,41 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-    class DefaultAddContactComponent(
-        componentContext: ComponentContext,
-        val onContactSaved: () -> Unit
-    ) : AddContactComponent, ComponentContext by componentContext {
+class DefaultAddContactComponent(
+    componentContext: ComponentContext,
+    val onContactSaved: () -> Unit
+) : AddContactComponent, ComponentContext by componentContext {
 
-        private lateinit var store: AddContactStore
+    private val store: AddContactStore = instanceKeeper.getStore {
+        val storeFactory = AddContactStoreFactory()
+        storeFactory.create()
+    }
 
-        init {
-            componentScope().launch {
-                store.labels.collect {
-                    when (it) {
-                        AddContactStore.Label.ContactSaved -> {
-                            onContactSaved()
-                        }
+    init {
+        componentScope().launch {
+            store.labels.collect {
+                when (it) {
+                    AddContactStore.Label.ContactSaved -> {
+                        onContactSaved()
                     }
                 }
             }
         }
-
-        @OptIn(ExperimentalCoroutinesApi::class)
-        override val model: StateFlow<AddContactStore.State>
-            get() = store.stateFlow
-
-        override fun onUsernameChanged(username: String) {
-            store.accept(AddContactStore.Intent.ChangeUsername(username))
-        }
-
-        override fun onPhoneChanged(phone: String) {
-            store.accept(AddContactStore.Intent.ChangePhone(phone))
-        }
-
-        override fun onSaveContactClicked() {
-            store.accept(AddContactStore.Intent.SaveContact)
-        }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val model: StateFlow<AddContactStore.State>
+        get() = store.stateFlow
+
+    override fun onUsernameChanged(username: String) {
+        store.accept(AddContactStore.Intent.ChangeUsername(username))
+    }
+
+    override fun onPhoneChanged(phone: String) {
+        store.accept(AddContactStore.Intent.ChangePhone(phone))
+    }
+
+    override fun onSaveContactClicked() {
+        store.accept(AddContactStore.Intent.SaveContact)
+    }
+}
