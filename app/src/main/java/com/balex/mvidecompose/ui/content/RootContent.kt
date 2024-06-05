@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.balex.mvidecompose.presentation.DefaultRootComponent
+import com.balex.mvidecompose.presentation.RootComponent
 import com.balex.mvidecompose.ui.theme.MviDecomposeTestTheme
 
 @Composable
@@ -20,15 +21,15 @@ fun RootContent(
                 stack = component.stack
             ) {
                 when (val instance = it.instance) {
-                    is DefaultRootComponent.Child.AddContact -> {
+                    is RootComponent.Child.AddContact -> {
                         AddContact(component = instance.component)
                     }
 
-                    is DefaultRootComponent.Child.ContactList -> {
+                    is RootComponent.Child.ContactList -> {
                         Contacts(component = instance.component)
                     }
 
-                    is DefaultRootComponent.Child.EditContact -> {
+                    is RootComponent.Child.EditContact -> {
                         EditContact(component = instance.component)
                     }
                 }
